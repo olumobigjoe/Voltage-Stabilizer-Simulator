@@ -24,7 +24,7 @@ def log_user_action(student_id, action_type, details):
         "Details": str(details)
     }])
     if not os.path.isfile(LOG_FILE):
-        log_data.to_csv(LOG_FILE, index=False)
+        log_data.to_csv(log_data, index=False)
     else:
         log_data.to_csv(LOG_FILE, mode='a', header=False, index=False)
 
@@ -38,7 +38,7 @@ if 'quiz_submitted' not in st.session_state:
 if 'saved_score' not in st.session_state:
     st.session_state['saved_score'] = 0
 
-# Data table storage configuration
+# Base DataFrame definition initialized in session memory
 if 'zener_data' not in st.session_state:
     st.session_state['zener_data'] = pd.DataFrame(columns=[
         "PSU Voltage V_s (V)", 
@@ -58,10 +58,19 @@ if not st.session_state['authenticated']:
     matric_no = st.text_input("Student Matriculation Number:")
     if st.button("Initialize Lab Bench"):
         if matric_no.strip() != "":
+            # CRITICAL ADJUSTMENT: Force-clear state parameters for a completely fresh start per user session
+            st.session_state['zener_data'] = pd.DataFrame(columns=[
+                "PSU Voltage V_s (V)", 
+                "Calculated Output V_o (V)", 
+                "Series Resistor (Ω)", 
+                "Load Resistor (Ω)"
+            ])
             st.session_state['student_id'] = matric_no.strip()
             st.session_state['authenticated'] = True
-            st.session_state['quiz_submitted'] = False # Reset quiz lock for new student
-            log_user_action(st.session_state['student_id'], "Session_Start", "Initialized Automated Zener Bench.")
+            st.session_state['quiz_submitted'] = False 
+            st.session_state['saved_score'] = 0
+            
+            log_user_action(st.session_state['student_id'], "Session_Start", "Initialized Fresh Isolated Lab Bench.")
             st.rerun()
         else:
             st.warning("Identification required to track experimental logs.")
@@ -79,27 +88,19 @@ st.sidebar.markdown("---")
 st.sidebar.subheader("📥 Auto-Calculation Data Logger")
 st.sidebar.markdown("*Input your Power Supply Unit (PSU) voltage. The circuit engine will automatically compute the regulated output voltage ($V_o$).*")
 
-# The student only inputs the variable input voltage source (Vs)
 v_psu = st.sidebar.number_input("PSU Input Voltage, V_s (Volts):", min_value=0.00, max_value=30.00, value=0.00, step=0.50, format="%.2f")
 
 # --- SOLID-STATE CIRCUITS MATHEMATICAL PHYSICS ENGINE ---
-# 1. Calculate the open-circuit voltage at the node using the standard voltage divider rule
 v_open = v_psu * (r_load / (r_series + r_load))
 
-# 2. Determine circuit behavior based on whether the Zener breakdown threshold has been reached
 if v_open < v_zener:
-    # Zener is off (open circuit state)
     v_output_calc = v_open
 else:
-    # Zener is conducting in the reverse breakdown plateau
-    # Incorporating a small dynamic Zener resistance (R_z ~ 5 ohms) for non-ideal realism
     r_z = 5.0 
     v_output_calc = (((v_psu / r_series) + (v_zener / r_z)) / ((1.0 / r_series) + (1.0 / r_load) + (1.0 / r_z)))
 
-# Force 2 decimal place restriction
 v_output_calc = round(v_output_calc, 2)
 
-# Ensure output voltage does not mathematically display higher than input supply voltage
 if v_output_calc > v_psu:
     v_output_calc = round(v_psu, 2)
 
@@ -153,7 +154,7 @@ with col_left:
     """)
 
 with col_right:
-    st.subheader("📋 Experimental Spreadsheet Log")
+    st.subheader(f"📋 Experimental Spreadsheet Log [{st.session_state['student_id']}]")
     active_df = st.session_state['zener_data']
     st.dataframe(active_df, use_container_width=True, hide_index=True)
 
@@ -194,7 +195,6 @@ with col_chart:
 with col_viva:
     st.subheader("📝 Post-Lab Regulation Assessment")
     
-    # Check if student has already submitted the test
     if st.session_state['quiz_submitted']:
         st.error(f"🔒 Submission Closed. You have already completed this laboratory evaluation test.")
         st.metric("Your Locked Grade Score", f"{st.session_state['saved_score']}/100")
@@ -245,7 +245,6 @@ with col_viva:
                 if q4 == "Strict Reverse Bias, operating in its avalanche/Zener breakdown region.": score += 20
                 if q5 == "The Zener diode acts as an open circuit, and output voltage is determined strictly by a resistive voltage divider.": score += 20
                 
-                # Commit state values to block future changes
                 st.session_state['quiz_submitted'] = True
                 st.session_state['saved_score'] = score
                 
@@ -257,4 +256,5 @@ if st.button("Log Out / Reset Lab Bench"):
     st.session_state['authenticated'] = False
     st.session_state['quiz_submitted'] = False
     st.session_state['saved_score'] = 0
+    st.session_state['zener_data'] = pd.DataFrame(columns=["PSU Voltage V_s (V)", "Calculated Output V_o (V)", "Series Resistor (Ω)", "Load Resistor (Ω)"])
     st.rerun()
