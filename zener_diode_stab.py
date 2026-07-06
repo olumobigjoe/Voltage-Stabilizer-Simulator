@@ -12,78 +12,79 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- STRICT BLACK-ON-BROWN LAB THEME (CSS) ---
+# --- MODERN HIGH-CONTRAST LAB THEME (CSS) ---
 st.markdown("""
     <style>
-        /* Base application background (Warm Laboratory Brown) */
+        /* Base application background (Warm Light Cream) */
         .stApp {
-            background-color: #8B5A2B;
-            color: #000000;
+            background-color: #FDFBF7;
+            color: #2B2625;
         }
-        /* Main background content container card (Slightly Lighter Warm Brown for visibility) */
+        /* Main background content container card (Clean Canvas Soft Gray-Beige) */
         .main .block-container {
-            background-color: #A06D3B;
+            background-color: #F4F0E6;
             padding: 3rem;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-top: 2rem;
-            border: 3px solid #000000;
+            border: 1px solid #D1C7BD;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
         }
-        /* Sidebar layout styling */
+        /* Sidebar layout styling (Professional Charcoal) */
         section[data-testid="stSidebar"] {
-            background-color: #734A22 !important;
-            border-right: 3px solid #000000;
+            background-color: #2B2625 !important;
+            border-right: 1px solid #1E1A19;
         }
-        /* Enforce absolute black on text, labels, headers, and descriptions */
-        h1, h2, h3, h4, p, span, label, li, .stMarkdown, section[data-testid="stSidebar"] .stMarkdown, section[data-testid="stSidebar"] h3 {
-            color: #000000 !important;
-            font-weight: 600 !important;
+        /* Sidebar texts forced to crisp white/light gray for readability */
+        section[data-testid="stSidebar"] .stMarkdown, 
+        section[data-testid="stSidebar"] h1, 
+        section[data-testid="stSidebar"] h2, 
+        section[data-testid="stSidebar"] h3, 
+        section[data-testid="stSidebar"] label {
+            color: #F4F0E6 !important;
         }
-        /* Form containers, alerts, and input blocks */
-        div[data-testid="stForm"], .stAlert, div[data-testid="stWidgetLabel"], div[data-testid="stNumberInput"] {
-            background-color: #B3804E !important;
-            border: 2px solid #000000 !important;
-            color: #000000 !important;
+        /* Enforce elegant dark charcoal on main headings and texts */
+        h1, h2, h3, h4, p, span, label, li, .stMarkdown {
+            color: #2B2625 !important;
+            font-weight: 500;
         }
-        /* Input elements internal text color override */
-        input {
-            color: #000000 !important;
-            font-weight: bold !important;
+        /* Input blocks, Forms and Alerts stylized clearly */
+        div[data-testid="stForm"], .stAlert, div[data-testid="stNumberInput"] {
+            background-color: #FFFFFF !important;
+            border: 1px solid #C4B9AF !important;
+            border-radius: 8px;
         }
-        /* Interactive Buttons */
+        /* Interactive Primary Accent Buttons */
         div.stButton > button {
-            background-color: #000000 !important;
-            color: #A06D3B !important;
-            border: 2px solid #000000 !important;
-            font-weight: bold;
+            background-color: #D96B43 !important;
+            color: #FFFFFF !important;
+            border: none !important;
+            font-weight: bold !important;
+            border-radius: 6px !important;
+            padding: 0.5rem 1.5rem !important;
+            transition: all 0.3s ease;
         }
         div.stButton > button:hover {
-            background-color: #A06D3B !important;
-            color: #000000 !important;
-            border-color: #000000 !important;
+            background-color: #B8532D !important;
+            color: #FFFFFF !important;
+            box-shadow: 0px 2px 6px rgba(0,0,0,0.15);
         }
-        /* Tab navigation formatting */
+        /* Clean Tab Navigation */
         button[data-baseweb="tab"] {
-            color: #3D2510 !important;
+            color: #8C8075 !important;
             font-weight: bold !important;
         }
         button[aria-selected="true"] {
-            color: #000000 !important;
-            border-bottom-color: #000000 !important;
-            font-size: 1.1em !important;
+            color: #D96B43 !important;
+            border-bottom-color: #D96B43 !important;
+            font-size: 1.05em !important;
         }
         hr {
-            border-color: #000000 !important;
-            border-width: 2px;
-        }
-        /* Structural Dataframe tables forced visibility styling */
-        div[data-testid="stDataFrame"] {
-            background-color: #B3804E !important;
-            border: 2px solid #000000;
+            border-color: #C4B9AF !important;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# --- LEARNING ANALYTICS LOGGER (FIXED BUG) ---
+# --- LEARNING ANALYTICS LOGGER (FIXED CSV EXPORT BUG) ---
 LOG_FILE = "student_analytics_log.csv"
 
 def log_user_action(student_id, action_type, details):
@@ -95,7 +96,7 @@ def log_user_action(student_id, action_type, details):
         "Details": str(details)
     }])
     if not os.path.isfile(LOG_FILE):
-        log_data.to_csv(LOG_FILE, index=False) # FIXED: Changed from log_data to LOG_FILE
+        log_data.to_csv(LOG_FILE, index=False)  # FIXED: Writing to file target instead of data variable
     else:
         log_data.to_csv(LOG_FILE, mode='a', header=False, index=False)
 
@@ -119,12 +120,12 @@ if 'zener_data' not in st.session_state:
 
 # --- HEADER ---
 st.title("⚡ Interactive Zener Diode Shunt Voltage Stabilizer Simulation")
-st.subheader("Department of Physics/Electronics — Solid State Electronics Laboratory Workspace")
+st.subheader("Solid State Electronics Virtual Laboratory Bench")
 st.markdown("---")
 
 # --- LOGIN GATEWAY ---
 if not st.session_state['authenticated']:
-    st.info("👋 Welcome! Please initialize the laboratory bench by entering your Matriculation/Student Number.")
+    st.info("👋 Welcome! Please enter your Matriculation or Student Identification Number to launch the bench.")
     matric_no = st.text_input("Student Identification Number:")
     if st.button("Initialize Lab Bench"):
         if matric_no.strip() != "":
@@ -142,12 +143,12 @@ if not st.session_state['authenticated']:
             log_user_action(st.session_state['student_id'], "Session_Start", "Initialized Fresh Isolated Lab Bench.")
             st.rerun()
         else:
-            st.warning("Identification required to track experimental logs.")
+            st.warning("An identification number is required to save experimental records.")
     st.stop()
 
 # --- SIDEBAR INTERFACE ---
-st.sidebar.header("🎛️ Virtual Instrument Controls")
-st.sidebar.markdown(f"**Active User:** `{st.session_state['student_id']}`")
+st.sidebar.header("🎛️ Virtual Instruments")
+st.sidebar.markdown(f"**Active Researcher:** `{st.session_state['student_id']}`")
 st.sidebar.markdown("---")
 
 # --- MULTI-TAB WORKSPACE NAVIGATION ---
@@ -235,12 +236,16 @@ with tab_sim:
     col_left, col_right = st.columns([1, 1])
 
     with col_left:
-        st.subheader("🎛️ Schematic Circuit Diagram Reference")
+        st.subheader("🖼️ Circuit Schematic Reference")
         
-        # High-Fidelity Diagram Injection Tag replacing the old code text block
-        st.markdown("")
+        # High-Fidelity Professional Image Call
+        st.image(
+            "https://upload.wikimedia.org/wikipedia/commons/e/ee/Zener_diode_stabilizer.svg", 
+            caption="Standard Zener Diode Shunt Regulator Topology",
+            use_container_width=True
+        )
         
-        st.caption(f"Active Parameter States: Series Resistor ($R_s$) = {r_series} Ω, Load Resistor ($R_L$) = {r_load} Ω, Target Reference ($V_Z$) = {v_zener} V")
+        st.caption(f"Active Live Parameters: Rs = {r_series} Ω, RL = {r_load} Ω, VZ Target = {v_zener} V")
 
     with col_right:
         st.subheader("📋 Experimental Spreadsheet Log")
@@ -248,7 +253,7 @@ with tab_sim:
         st.dataframe(active_df, use_container_width=True, hide_index=True)
 
     st.markdown("---")
-    st.subheader("📊 Regulation Characteristics Plot: $V_o$ versus $V_s$")
+    st.subheader("📊 Regulation Characteristics Plot: Output Voltage vs Supply Input")
     
     fig = go.Figure()
     if not active_df.empty:
@@ -256,9 +261,9 @@ with tab_sim:
             x=active_df["PSU Voltage V_s (V)"], 
             y=active_df["Calculated Output V_o (V)"],
             mode='markers+lines', 
-            name="Logged Automated Data",
-            marker=dict(color='#000000', size=10, symbol='diamond'),
-            line=dict(color='#000000', width=2.5)
+            name="Logged Lab Data",
+            marker=dict(color='#D96B43', size=10, symbol='diamond'),
+            line=dict(color='#D96B43', width=2.5)
         ))
         x_max = max(active_df["PSU Voltage V_s (V)"].max() + 2, 15.0)
         y_max = max(active_df["Calculated Output V_o (V)"].max() + 2, v_zener + 2)
@@ -267,83 +272,5 @@ with tab_sim:
         st.info("💡 The coordinate grid is waiting for logs. Adjust 'PSU Input Voltage' in the sidebar and click 'Log Calculated Metrics to Table'.")
 
     fig.layout = go.Layout(
-        xaxis=dict(title="Input Supply Voltage, V_s (Volts)", range=[0, x_max], zeroline=True, gridcolor="rgba(0,0,0,0.25)", titlefont=dict(color="#000000"), tickfont=dict(color="#000000")),
-        yaxis=dict(title="Stabilized Output Voltage, V_o (Volts)", range=[0, y_max], zeroline=True, gridcolor="rgba(0,0,0,0.25)", titlefont=dict(color="#000000"), tickfont=dict(color="#000000")),
-        template="plotly_white",
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="#B3804E",
-        height=400,
-        margin=dict(l=20, r=20, t=10, b=20)
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-# ==========================================
-# TAB 3: CONCEPTUAL EXERCISE
-# ==========================================
-with tab_quiz:
-    st.header("Post-Lab Core Component Assessment")
-    
-    if st.session_state['quiz_submitted']:
-        st.error(f"🔒 Submission Closed. You have already completed this laboratory evaluation test.")
-        st.metric("Your Locked Grade Score", f"{st.session_state['saved_score']}/100")
-    else:
-        with st.form("zener_viva_voce"):
-            q1 = st.radio(
-                "1. What structural behavior defines a Zener diode compared to standard rectifying diodes?",
-                ["It possesses a heavily doped p-n junction engineered for reliable breakdown in reverse bias.",
-                 "It acts exclusively as an open circuit when forward-biased.",
-                 "It completely blocks current flow in both operational directions permanently."]
-            )
-            
-            q2 = st.radio(
-                "2. What is the role of the series limiting resistor ($R_s$) in this shunt circuit?",
-                ["To boost the overall current profile exiting the unregulated supply network.",
-                 "To handle excess input voltage variance and protect the Zener from thermal destruction.",
-                 "To eliminate voltage limits and facilitate unregulated high power transfer."]
-            )
-            
-            q3 = st.radio(
-                "3. If the load resistor ($R_L$) is completely disconnected (open-circuit condition), how does the Zener diode react?",
-                ["Its current increases substantially because it must shunt all loop current previously routed to the load.",
-                 "The diode instantly reverses into an active power source generation matrix.",
-                 "Zener tracking current falls directly to zero as power paths decouple."]
-            )
-            
-            q4 = st.radio(
-                "4. What operational state occurs if the unregulated input voltage supply is less than the Zener breakdown threshold?",
-                ["The Zener operates as an open circuit, making output voltage dependent on the resistive voltage divider.",
-                 "The Zener turns into an ideal short circuit to loop structural configurations to ground.",
-                 "The load drops to a negative voltage range relative to standard system ground references."]
-            )
-            
-            q5 = st.radio(
-                "5. In which bias condition must a Zener diode run to achieve voltage regulation outputs?",
-                ["Forward-bias condition near standard native knee values.",
-                 "Reverse breakdown avalanche/Zener region thresholds.",
-                 "Unbiased floating state loops entirely decoupled from active ground paths."]
-            )
-            
-            submitted = st.form_submit_button("Submit Assessment (Single Attempt Only)")
-            
-            if submitted:
-                score = 0
-                if q1 == "It possesses a heavily doped p-n junction engineered for reliable breakdown in reverse bias.": score += 20
-                if q2 == "To handle excess input voltage variance and protect the Zener from thermal destruction.": score += 20
-                if q3 == "Its current increases substantially because it must shunt all loop current previously routed to the load.": score += 20
-                if q4 == "The Zener operates as an open circuit, making output voltage dependent on the resistive voltage divider.": score += 20
-                if q5 == "Reverse breakdown avalanche/Zener region thresholds.": score += 20
-                
-                st.session_state['quiz_submitted'] = True
-                st.session_state['saved_score'] = score
-                
-                log_user_action(st.session_state['student_id'], "Zener_Quiz_Locked_Submission", f"Score: {score}/100")
-                st.rerun()
-
-# --- FOOTER RESET TRIGGER ---
-st.markdown("---")
-if st.button("🚪 Log Out / Reset Lab Bench Session"):
-    st.session_state['authenticated'] = False
-    st.session_state['quiz_submitted'] = False
-    st.session_state['saved_score'] = 0
-    st.session_state['zener_data'] = pd.DataFrame(columns=["PSU Voltage V_s (V)", "Calculated Output V_o (V)", "Series Resistor (Ω)", "Load Resistor (Ω)"])
-    st.rerun()
+        xaxis=dict(title="Input Supply Voltage, V_s (Volts)", range=[0, x_max], zeroline=True, gridcolor="#EBE5DC", titlefont=dict(color="#2B2625"), tickfont=dict(color="#2B2625")),
+        yaxis=dict(title="Stabilized Output Voltage, V_o (Volts)", range=[0, y_max], zeroline=True, gridcolor="#EBE5DC", titlefont=dict(color="#2B2625"), tickfont=dict(color
