@@ -95,4 +95,4 @@ def log_user_action(student_id, action_type, details):
 # --- SESSION STATE INITIALIZATION ---
 if 'student_id' not in st.session_state:
     st.session_state['student_id'] = "Guest_Student"
-if 'authenticated
+if 'authenticated'
