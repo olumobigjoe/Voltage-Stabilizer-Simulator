@@ -8,13 +8,13 @@ import os
 
 # ─── PAGE CONFIG ─────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Zener Diode Voltage Stabilizer Module",
+    page_title="Zener Diode Voltage Stabilizer Lab",
     page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# ─── CSS — Brown & Black Theme ────────────────────────────────────────────────
+# ─── CSS — Deep Space Teal & Violet Theme ────────────────────────────────────
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Nunito:wght@400;600;700;800&display=swap');
@@ -23,133 +23,133 @@ html, body, [class*="css"] { font-family: 'Nunito', sans-serif; }
 
 /* ── Background ── */
 .stApp {
-    background: linear-gradient(145deg, #0d0600 0%, #1a0c05 40%, #120800 100%);
-    color: #f0dcc0;
+    background: linear-gradient(145deg, #020818 0%, #060d1f 40%, #030b18 100%);
+    color: #cde8f5;
 }
 
 /* ── Hero ── */
 .hero {
-    background: linear-gradient(135deg, #3d1a00 0%, #5c2800 40%, #7a3800 100%);
-    border: 1px solid #a0520a;
+    background: linear-gradient(135deg, #0a1f4e 0%, #0d2860 40%, #1a1060 100%);
+    border: 1px solid #2563eb;
     border-radius: 14px; padding: 30px 40px; margin-bottom: 26px;
     position: relative; overflow: hidden;
-    box-shadow: 0 8px 32px rgba(160,82,10,0.3);
+    box-shadow: 0 8px 32px rgba(14,165,233,0.25);
 }
 .hero::before {
     content:''; position:absolute; top:0; left:0; right:0; height:3px;
-    background: linear-gradient(90deg, transparent, #d4813a, #f0a060, transparent);
+    background: linear-gradient(90deg, transparent, #06b6d4, #7c3aed, transparent);
 }
 .hero::after {
     content:''; position:absolute; right:-60px; top:-60px;
     width:200px; height:200px; border-radius:50%;
-    background: rgba(212,129,58,0.08);
+    background: rgba(6,182,212,0.07);
 }
-.hero-title { font-family:'Share Tech Mono',monospace; font-size:1.85rem; color:#f0a060; margin:0; letter-spacing:.04em; }
-.hero-sub   { font-size:.82rem; color:#c4956a; margin-top:7px; letter-spacing:.1em; text-transform:uppercase; font-weight:700; }
+.hero-title { font-family:'Share Tech Mono',monospace; font-size:1.85rem; color:#06b6d4; margin:0; letter-spacing:.04em; }
+.hero-sub   { font-size:.82rem; color:#7dd3fc; margin-top:7px; letter-spacing:.1em; text-transform:uppercase; font-weight:700; }
 
 /* ── Section Header ── */
 .sec {
-    font-family:'Share Tech Mono',monospace; font-size:.74rem; color:#d4813a;
+    font-family:'Share Tech Mono',monospace; font-size:.74rem; color:#06b6d4;
     letter-spacing:.18em; text-transform:uppercase;
-    border-bottom:1px solid #5c2800; padding-bottom:5px; margin:22px 0 14px;
+    border-bottom:1px solid #1e3a5f; padding-bottom:5px; margin:22px 0 14px;
 }
 
 /* ── Definition Cards ── */
 .def-card {
-    background: #1e0e04; border:1px solid #5c2800; border-left:4px solid #d4813a;
+    background: #060f24; border:1px solid #1e3a5f; border-left:4px solid #06b6d4;
     border-radius:10px; padding:15px 18px; margin-bottom:12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 10px rgba(6,182,212,0.08);
     transition: transform 0.2s;
 }
 .def-card:hover { transform: translateX(4px); }
-.def-title { font-weight:800; color:#f0a060; font-size:.9rem; margin-bottom:5px; }
-.def-body  { font-size:.83rem; color:#c4956a; line-height:1.68; }
+.def-title { font-weight:800; color:#38bdf8; font-size:.9rem; margin-bottom:5px; }
+.def-body  { font-size:.83rem; color:#94c4d8; line-height:1.68; }
 
 /* ── Info Box ── */
 .info-box {
-    background:#1e0e04; border:1px solid #7a3800; border-radius:10px;
-    padding:16px 20px; font-size:.86rem; color:#d4ac82; line-height:1.7;
+    background:#060f24; border:1px solid #1e4a7f; border-radius:10px;
+    padding:16px 20px; font-size:.86rem; color:#a5d8ef; line-height:1.7;
 }
-.info-box strong { color:#f0a060; }
+.info-box strong { color:#38bdf8; }
 
-/* ── Amber callout ── */
+/* ── Callout box ── */
 .amber-box {
-    background:#251000; border:1px solid #a0520a; border-radius:10px;
-    padding:14px 18px; font-size:.84rem; color:#c4956a; line-height:1.65; margin:10px 0;
+    background:#0a0f2a; border:1px solid #7c3aed; border-radius:10px;
+    padding:14px 18px; font-size:.84rem; color:#c4b5fd; line-height:1.65; margin:10px 0;
 }
-.amber-box strong { color:#d4813a; }
+.amber-box strong { color:#a78bfa; }
 
 /* ── Metric Cards ── */
 .mc {
-    background:#1e0e04; border:1px solid #5c2800; border-radius:10px;
+    background:#060f24; border:1px solid #1e3a5f; border-radius:10px;
     padding:14px 10px; text-align:center;
-    box-shadow:0 2px 8px rgba(0,0,0,0.5);
+    box-shadow:0 2px 8px rgba(6,182,212,0.1);
 }
-.mc .ml { font-size:.65rem; color:#8b6040; text-transform:uppercase; letter-spacing:.09em; font-weight:700; }
-.mc .mv { font-family:'Share Tech Mono',monospace; font-size:1.35rem; color:#f0a060; margin-top:4px; }
-.mc .mu { font-size:.65rem; color:#6b4020; }
+.mc .ml { font-size:.65rem; color:#4a7a9b; text-transform:uppercase; letter-spacing:.09em; font-weight:700; }
+.mc .mv { font-family:'Share Tech Mono',monospace; font-size:1.35rem; color:#06b6d4; margin-top:4px; }
+.mc .mu { font-size:.65rem; color:#2a5a7a; }
 
 /* ── Status indicators ── */
-.status-reg   { background:#0a1a05; border:2px solid #4ade80; border-radius:8px; padding:12px 18px; color:#4ade80; font-family:'Share Tech Mono',monospace; font-size:.9rem; }
-.status-unreg { background:#1a0a05; border:2px solid #f0a060; border-radius:8px; padding:12px 18px; color:#f0a060; font-family:'Share Tech Mono',monospace; font-size:.9rem; }
+.status-reg   { background:#021a10; border:2px solid #4ade80; border-radius:8px; padding:12px 18px; color:#4ade80; font-family:'Share Tech Mono',monospace; font-size:.9rem; }
+.status-unreg { background:#0a0a20; border:2px solid #a78bfa; border-radius:8px; padding:12px 18px; color:#a78bfa; font-family:'Share Tech Mono',monospace; font-size:.9rem; }
 
 /* ── Score cards ── */
-.score-pass { background:#081a05; border:2px solid #4ade80; border-radius:12px; padding:20px; color:#4ade80; }
-.score-mid  { background:#1a1005; border:2px solid #facc15; border-radius:12px; padding:20px; color:#facc15; }
-.score-fail { background:#1a0500; border:2px solid #f87171; border-radius:12px; padding:20px; color:#f87171; }
+.score-pass { background:#021a10; border:2px solid #4ade80; border-radius:12px; padding:20px; color:#4ade80; }
+.score-mid  { background:#0d1030; border:2px solid #818cf8; border-radius:12px; padding:20px; color:#818cf8; }
+.score-fail { background:#1a0520; border:2px solid #f472b6; border-radius:12px; padding:20px; color:#f472b6; }
 
 /* ── Param display ── */
-.pd { background:#1e0e04; border:2px solid #7a3800; border-radius:8px; padding:9px 0;
-      text-align:center; font-family:'Share Tech Mono',monospace; font-size:1.2rem; color:#f0a060; font-weight:700; }
-.pl { font-size:.68rem; color:#8b6040; text-transform:uppercase; letter-spacing:.09em; text-align:center; margin-bottom:3px; font-weight:700; }
+.pd { background:#060f24; border:2px solid #1e4a7f; border-radius:8px; padding:9px 0;
+      text-align:center; font-family:'Share Tech Mono',monospace; font-size:1.2rem; color:#06b6d4; font-weight:700; }
+.pl { font-size:.68rem; color:#4a7a9b; text-transform:uppercase; letter-spacing:.09em; text-align:center; margin-bottom:3px; font-weight:700; }
 
 /* ── Comparison table ── */
 .cmp-table { width:100%; border-collapse:collapse; font-size:.84rem; border-radius:10px; overflow:hidden; }
-.cmp-table th { background:#5c2800; color:#f0a060; padding:10px 14px; text-align:left; font-weight:800; }
-.cmp-table td { padding:9px 14px; border-bottom:1px solid #2d1200; color:#c4956a; }
-.cmp-table tr:nth-child(even) td { background:#150900; }
-.cmp-table td:first-child { font-weight:700; color:#d4813a; }
+.cmp-table th { background:#0d2860; color:#38bdf8; padding:10px 14px; text-align:left; font-weight:800; }
+.cmp-table td { padding:9px 14px; border-bottom:1px solid #0f1f3a; color:#94c4d8; }
+.cmp-table tr:nth-child(even) td { background:#060f24; }
+.cmp-table td:first-child { font-weight:700; color:#06b6d4; }
 
 /* ── Sidebar ── */
 [data-testid="stSidebar"] {
-    background: linear-gradient(180deg, #150900 0%, #0d0600 100%);
-    border-right:1px solid #5c2800;
+    background: linear-gradient(180deg, #060d1f 0%, #020818 100%);
+    border-right:1px solid #1e3a5f;
 }
-[data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { color:#f0a060; }
-[data-testid="stSidebar"] label { color:#c4956a !important; font-weight:600 !important; }
-[data-testid="stSidebar"] .stMarkdown p { color:#a07050; }
+[data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 { color:#38bdf8; }
+[data-testid="stSidebar"] label { color:#7dd3fc !important; font-weight:600 !important; }
+[data-testid="stSidebar"] .stMarkdown p { color:#4a7a9b; }
 
 /* ── Tabs ── */
 .stTabs [data-baseweb="tab-list"] {
-    background:#150900; border-bottom:2px solid #5c2800;
+    background:#060d1f; border-bottom:2px solid #1e3a5f;
     border-radius:10px 10px 0 0; gap:4px; padding:0 8px;
 }
 .stTabs [data-baseweb="tab"] {
-    background:transparent; color:#8b6040; border:none;
+    background:transparent; color:#4a7a9b; border:none;
     font-family:'Nunito',sans-serif; font-size:.88rem; font-weight:700; padding:12px 20px;
 }
 .stTabs [aria-selected="true"] {
-    background:#1e0e04 !important; color:#f0a060 !important;
-    border-bottom:3px solid #d4813a !important; border-radius:8px 8px 0 0;
+    background:#060f24 !important; color:#06b6d4 !important;
+    border-bottom:3px solid #06b6d4 !important; border-radius:8px 8px 0 0;
 }
 
 /* ── Buttons ── */
 .stButton > button {
-    background: linear-gradient(135deg, #7a3800, #5c2800);
-    color:#f0a060; border:1px solid #a0520a; border-radius:8px;
+    background: linear-gradient(135deg, #0d2860, #1a1060);
+    color:#38bdf8; border:1px solid #2563eb; border-radius:8px;
     font-family:'Nunito',sans-serif; font-size:.85rem; font-weight:700;
     padding:8px 20px; transition:all .2s; width:100%;
-    box-shadow:0 2px 8px rgba(0,0,0,0.4);
+    box-shadow:0 2px 8px rgba(6,182,212,0.2);
 }
-.stButton > button:hover { background:linear-gradient(135deg,#a0520a,#7a3800); transform:translateY(-1px); }
+.stButton > button:hover { background:linear-gradient(135deg,#1e4a9f,#2d1a90); transform:translateY(-1px); }
 
 /* ── Inputs ── */
-.stNumberInput label, .stSelectbox label, .stRadio label { color:#c4956a !important; font-weight:600 !important; font-size:.85rem !important; }
+.stNumberInput label, .stSelectbox label, .stRadio label { color:#7dd3fc !important; font-weight:600 !important; font-size:.85rem !important; }
 div[data-baseweb="radio"] > div {
-    background:#1e0e04; border:1px solid #3d1a00; border-radius:8px;
+    background:#060f24; border:1px solid #1e3a5f; border-radius:8px;
     padding:8px 12px; margin:4px 0; transition:all .15s;
 }
-div[data-baseweb="radio"] > div:hover { background:#2d1200; border-color:#7a3800; }
+div[data-baseweb="radio"] > div:hover { background:#0d1a3a; border-color:#2563eb; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -179,7 +179,7 @@ for k, v in DEFS.items():
 # ─── HERO ────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero">
-  <p class="hero-title">🛡️ Zener Diode Shunt Voltage Stabilizer Simulation Lab</p>
+  <p class="hero-title">🛡️ Zener Diode Shunt Voltage Stabilizer Laboratory</p>
   <p class="hero-sub">DC Voltage Regulation · Breakdown Characteristics · Solid State Electronics</p>
 </div>""", unsafe_allow_html=True)
 
@@ -192,8 +192,8 @@ if not st.session_state["auth"]:
             🛡️ <strong>Welcome to the Zener Stabilizer Lab!</strong><br>
             Enter your Matriculation Number to initialise the laboratory bench.
         </div>""", unsafe_allow_html=True)
-        mat = st.text_input("Matriculation Number", placeholder="e.g. PHY/2024/021")
-        if st.button("▶  INITIALISE LAB"):
+        mat = st.text_input("Matriculation Number", placeholder="e.g. ENG/HND/2024/021")
+        if st.button("▶  INITIALISE LAB BENCH"):
             if mat.strip():
                 st.session_state["student_id"]  = mat.strip()
                 st.session_state["auth"]        = True
@@ -208,7 +208,7 @@ if not st.session_state["auth"]:
 
 # ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown(f"### Lab Bench")
+    st.markdown(f"### 🛡️ Lab Bench")
     st.markdown(f"**`{st.session_state['student_id']}`**")
     st.markdown("---")
     st.markdown("### ⚙️ Component Values")
@@ -218,7 +218,7 @@ with st.sidebar:
     vz     = st.number_input("Zener Voltage Vz (V):",   2.0,  15.0,   5.1,   0.1, format="%.1f")
 
     st.markdown("---")
-    st.markdown("### PSU Input")
+    st.markdown("### ⚡ PSU Input")
     vs     = st.number_input("Supply Voltage Vs (V):", 0.0, 30.0, 0.0, 0.5, format="%.2f")
 
     # ── Physics engine ──
@@ -247,7 +247,7 @@ with st.sidebar:
 
     col_a, col_b = st.columns(2)
     with col_a:
-        if st.button("Log Data"):
+        if st.button("➕ Log Point"):
             nr = pd.DataFrame([{"V_s (V)":round(vs,2),"V_o (V)":vo,"Rs (Ω)":round(rs,1),"RL (Ω)":round(rl,1)}])
             st.session_state["zener_data"] = (
                 pd.concat([st.session_state["zener_data"], nr], ignore_index=True)
@@ -255,7 +255,7 @@ with st.sidebar:
             log_action(st.session_state["student_id"], "DataPoint", f"Vs={vs},Vo={vo}")
             st.toast("Logged!", icon="⚙️")
     with col_b:
-        if st.button("Clear"):
+        if st.button("🗑️ Clear"):
             st.session_state["zener_data"] = pd.DataFrame(columns=["V_s (V)","V_o (V)","Rs (Ω)","RL (Ω)"])
             st.rerun()
 
@@ -282,7 +282,7 @@ tab1, tab2, tab3 = st.tabs([
 # TAB 1 — THEORY & COMPONENTS
 # ═══════════════════════════════════════════════════════════════════════════════
 with tab1:
-    st.markdown('<p class="sec">Practical Overview</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">// Practical Overview</p>', unsafe_allow_html=True)
     st.markdown("""
     <div class="info-box">
     <strong>Objective:</strong> To investigate the voltage regulation characteristics of a Zener Diode
@@ -295,7 +295,7 @@ with tab1:
     </div>""", unsafe_allow_html=True)
 
     # ── Component Definitions ─────────────────────────────────────────────────
-    st.markdown('<p class="sec">Definitions of Key Components & Terms</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">// Definitions of Key Components & Terms</p>', unsafe_allow_html=True)
 
     defs = [
         ("🛡️ Zener Diode (Dz)",
@@ -358,7 +358,7 @@ with tab1:
             </div>""", unsafe_allow_html=True)
 
     # ── Equations ─────────────────────────────────────────────────────────────
-    st.markdown('<p class="sec">Key Circuit Equations</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">// Key Circuit Equations</p>', unsafe_allow_html=True)
     st.markdown("""
     <table class="cmp-table">
       <thead><tr><th>Quantity</th><th>Formula</th><th>Notes</th></tr></thead>
@@ -383,21 +383,21 @@ with tab1:
     </div>""", unsafe_allow_html=True)
 
     # ── Circuit Diagram ───────────────────────────────────────────────────────
-    st.markdown('<p class="sec">Circuit Diagram</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">// Circuit Diagram</p>', unsafe_allow_html=True)
     components.html(f"""
     <style>
-      body {{ margin:0; padding:14px 10px 20px; background:#0d0600; }}
-      .w   {{ stroke:#d4813a; stroke-width:2; fill:none; }}
-      .t   {{ fill:#f0dcc0; font-family:monospace; font-size:11px; }}
-      .lbl {{ fill:#f0a060; font-family:monospace; font-size:10px; font-weight:bold; }}
-      .sub {{ fill:#a07050; font-family:monospace; font-size:9px; }}
+      body {{ margin:0; padding:14px 10px 20px; background:#020818; }}
+      .w   {{ stroke:#06b6d4; stroke-width:2; fill:none; }}
+      .t   {{ fill:#cde8f5; font-family:monospace; font-size:11px; }}
+      .lbl {{ fill:#38bdf8; font-family:monospace; font-size:10px; font-weight:bold; }}
+      .sub {{ fill:#4a7a9b; font-family:monospace; font-size:9px; }}
     </style>
     <svg viewBox="0 0 760 170" xmlns="http://www.w3.org/2000/svg" width="100%">
-      <rect width="760" height="170" fill="#0d0600"/>
+      <rect width="760" height="170" fill="#020818"/>
 
       <!-- PSU -->
       <rect x="20" y="55" width="65" height="60" rx="5"
-            style="fill:#150900;stroke:#d4813a;stroke-width:1.8"/>
+            style="fill:#060d1f;stroke:#06b6d4;stroke-width:1.8"/>
       <text x="52" y="82" text-anchor="middle" class="t" font-size="13">DC</text>
       <text x="52" y="97" text-anchor="middle" class="lbl">PSU</text>
       <text x="52" y="130" text-anchor="middle" class="sub">Vs={vs:.1f}V</text>
@@ -407,35 +407,35 @@ with tab1:
 
       <!-- Series Resistor Rs -->
       <rect x="150" y="55" width="100" height="30" rx="4"
-            style="fill:#1a0800;stroke:#d4813a;stroke-width:1.8"/>
+            style="fill:#060d1f;stroke:#06b6d4;stroke-width:1.8"/>
       <text x="200" y="74" text-anchor="middle" class="lbl">Rs  {rs:.0f} Ω</text>
       <text x="200" y="100" text-anchor="middle" class="sub">Series Resistor</text>
 
       <!-- Wire Rs → node A -->
       <line x1="250" y1="70" x2="370" y2="70" class="w"/>
       <!-- node A dot -->
-      <circle cx="370" cy="70" r="5" fill="#d4813a"/>
+      <circle cx="370" cy="70" r="5" fill="#06b6d4"/>
       <text x="370" y="50" text-anchor="middle" class="sub">Node A</text>
 
       <!-- Zener Diode (pointing down = reverse bias operation) -->
       <line x1="370" y1="70" x2="370" y2="88" class="w"/>
       <!-- Triangle (anode at bottom in reverse) -->
       <polygon points="356,105 384,105 370,87"
-               style="fill:#f0a060;stroke:#f0a060;stroke-width:1"/>
+               style="fill:#7c3aed;stroke:#a78bfa;stroke-width:1"/>
       <!-- Cathode bar (Zener has bent ends) -->
-      <line x1="352" y1="105" x2="388" y2="105" style="stroke:#f0a060;stroke-width:3"/>
-      <line x1="352" y1="101" x2="352" y2="109" style="stroke:#f0a060;stroke-width:2"/>
-      <line x1="388" y1="101" x2="388" y2="109" style="stroke:#f0a060;stroke-width:2"/>
+      <line x1="352" y1="105" x2="388" y2="105" style="stroke:#a78bfa;stroke-width:3"/>
+      <line x1="352" y1="101" x2="352" y2="109" style="stroke:#a78bfa;stroke-width:2"/>
+      <line x1="388" y1="101" x2="388" y2="109" style="stroke:#a78bfa;stroke-width:2"/>
       <!-- Zener bent ends on cathode bar -->
-      <line x1="352" y1="101" x2="346" y2="96"  style="stroke:#f0a060;stroke-width:2"/>
-      <line x1="388" y1="109" x2="394" y2="114" style="stroke:#f0a060;stroke-width:2"/>
+      <line x1="352" y1="101" x2="346" y2="96"  style="stroke:#a78bfa;stroke-width:2"/>
+      <line x1="388" y1="109" x2="394" y2="114" style="stroke:#a78bfa;stroke-width:2"/>
       <line x1="370" y1="105" x2="370" y2="130" class="w"/>
       <text x="402" y="98"  class="lbl">Dz</text>
       <text x="402" y="110" class="sub">Vz={vz:.1f}V</text>
 
       <!-- Load Resistor RL (vertical, parallel with Zener) -->
       <rect x="490" y="55" width="100" height="30" rx="4"
-            style="fill:#1a0800;stroke:#f0a060;stroke-width:1.8"/>
+            style="fill:#060d1f;stroke:#38bdf8;stroke-width:1.8"/>
       <text x="540" y="74" text-anchor="middle" class="lbl">RL  {rl:.0f} Ω</text>
       <text x="540" y="100" text-anchor="middle" class="sub">Load Resistor</text>
 
@@ -480,7 +480,7 @@ Zener Stabilizer: Rs={rs:.0f}ohm RL={rl:.0f}ohm Vz={vz:.1f}V
 # TAB 2 — SIMULATION
 # ═══════════════════════════════════════════════════════════════════════════════
 with tab2:
-    st.markdown('<p class="sec">Voltage Regulation Characteristic</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">// Voltage Regulation Characteristic</p>', unsafe_allow_html=True)
 
     # ── Live metric row ───────────────────────────────────────────────────────
     is_val  = (vs - vo) / rs if rs > 0 else 0
@@ -538,7 +538,7 @@ with tab2:
     fig.add_trace(go.Scatter(
         x=vs_th, y=vo_th,
         mode="lines", name="Theoretical Vo vs Vs",
-        line=dict(color="#d4813a", width=2.5)
+        line=dict(color="#06b6d4", width=2.5)
     ))
 
     # Vz reference line
@@ -568,23 +568,23 @@ with tab2:
 
     fig.update_layout(
         template="plotly_dark",
-        paper_bgcolor="#0d0600",
-        plot_bgcolor="#150900",
+        paper_bgcolor="#020818",
+        plot_bgcolor="#060d1f",
         height=450, margin=dict(l=10,r=10,t=30,b=10),
         xaxis=dict(title="Input Supply Voltage Vs (V)",
-                   gridcolor="#2d1200", zeroline=True, zerolinecolor="#5c2800",
-                   title_font=dict(color="#d4813a")),
+                   gridcolor="#0f1f3a", zeroline=True, zerolinecolor="#1e3a5f",
+                   title_font=dict(color="#06b6d4")),
         yaxis=dict(title="Output Voltage Vo (V)",
-                   gridcolor="#2d1200", zeroline=True, zerolinecolor="#5c2800",
-                   title_font=dict(color="#d4813a")),
-        font=dict(family="Nunito", color="#c4956a", size=11),
+                   gridcolor="#0f1f3a", zeroline=True, zerolinecolor="#1e3a5f",
+                   title_font=dict(color="#06b6d4")),
+        font=dict(family="Nunito", color="#7dd3fc", size=11),
         legend=dict(orientation="h", y=-0.22, bgcolor="rgba(0,0,0,0)",
                     bordercolor="#5c2800", borderwidth=1)
     )
     st.plotly_chart(fig, use_container_width=True)
 
     # ── Data Table & Export ───────────────────────────────────────────────────
-    st.markdown('<p class="sec">Logged Data Table</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">// Logged Data Table</p>', unsafe_allow_html=True)
     col_t, col_e = st.columns([2, 1])
     with col_t:
         if not zdf.empty:
@@ -615,7 +615,7 @@ with tab2:
 # TAB 3 — EXERCISE & SCORING
 # ═══════════════════════════════════════════════════════════════════════════════
 with tab3:
-    st.markdown('<p class="sec">Practical Exercises — 5 Questions</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">// Post-Practical Exercise — 5 Questions</p>', unsafe_allow_html=True)
     st.markdown("""
     <div class="info-box">
     Answer all <strong>5 questions</strong> below. Each question carries <strong>20 marks</strong>.
@@ -709,10 +709,10 @@ with tab3:
         fig_sc.add_shape(type="line", x0=60, x1=60, y0=-0.5, y1=0.5,
                          line=dict(color="#facc15", dash="dash", width=2))
         fig_sc.update_layout(
-            template="plotly_dark", paper_bgcolor="#0d0600", plot_bgcolor="#150900",
+            template="plotly_dark", paper_bgcolor="#020818", plot_bgcolor="#060d1f",
             height=110, margin=dict(l=10,r=50,t=10,b=10),
-            xaxis=dict(range=[0,115], gridcolor="#2d1200",
-                       title_font=dict(color="#d4813a")),
+            xaxis=dict(range=[0,115], gridcolor="#0f1f3a",
+                       title_font=dict(color="#06b6d4")),
             yaxis=dict(showticklabels=False),
             font=dict(family="Nunito", color="#c4956a", size=12),
             showlegend=False,
@@ -769,7 +769,7 @@ with tab3:
                 )
                 st.markdown("")
 
-            if st.form_submit_button("📨  SUBMIT & WAIT FOR YOUR SCORE",
+            if st.form_submit_button("📨  SUBMIT ANSWERS & GENERATE SCORE",
                                      use_container_width=True):
                 score = 0
                 for i, q in enumerate(QUESTIONS, 1):
