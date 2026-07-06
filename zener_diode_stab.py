@@ -274,3 +274,4 @@ with tab_sim:
     fig.layout = go.Layout(
         xaxis=dict(title="Input Supply Voltage, V_s (Volts)", range=[0, x_max], zeroline=True, gridcolor="#EBE5DC", titlefont=dict(color="#2B2625"), tickfont=dict(color="#2B2625")),
         yaxis=dict(title="Stabilized Output Voltage, V_o (Volts)", range=[0, y_max], zeroline=True, gridcolor="#EBE5DC", titlefont=dict(color="#2B2625"), tickfont=dict(color)
+        ))
