@@ -12,52 +12,64 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- CUSTOM BROWN & BLACK LAB THEME (CSS) ---
+# --- CUSTOM DEEP BLACK-ON-BROWN LAB THEME (CSS) ---
 st.markdown("""
     <style>
-        /* Base application background and text colors */
+        /* Base application background (Deep Black) and text colors */
         .stApp {
-            background-color: #1a1512;
+            background-color: #0b0806;
             color: #e6dfd9;
+        }
+        /* Main background content container card (Rich Dark Brown) */
+        .main .block-container {
+            background-color: #1c1410;
+            padding: 3rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            border: 1px solid #3a281f;
         }
         /* Sidebar layout styling */
         section[data-testid="stSidebar"] {
-            background-color: #2c1f18 !important;
-            border-right: 1px solid #4a3525;
+            background-color: #140e0b !important;
+            border-right: 1px solid #2d1e17;
         }
         section[data-testid="stSidebar"] .stMarkdown, section[data-testid="stSidebar"] h3 {
             color: #f5efe9 !important;
         }
-        /* Card containers and form stylings */
+        /* Card containers, forms, and alerts */
         div[data-testid="stForm"], .stAlert, div.stButton > button {
-            background-color: #261c16 !important;
-            border: 1px solid #543d2b !important;
+            background-color: #110c09 !important;
+            border: 1px solid #3e2b21 !important;
             color: #f5efe9 !important;
         }
         div.stButton > button:hover {
-            background-color: #3d2d24 !important;
-            border-color: #bd8a5c !important;
+            background-color: #2a1b14 !important;
+            border-color: #8c6246 !important;
             color: #ffffff !important;
         }
         /* Tab formatting */
         button[data-baseweb="tab"] {
-            color: #a8998e !important;
+            color: #8c7b70 !important;
             font-weight: bold !important;
         }
         button[aria-selected="true"] {
-            color: #bd8a5c !important;
-            border-bottom-color: #bd8a5c !important;
+            color: #d19f77 !important;
+            border-bottom-color: #d19f77 !important;
         }
         h1, h2, h3, h4 {
-            color: #bd8a5c !important;
+            color: #d19f77 !important;
         }
         hr {
-            border-color: #4a3525 !important;
+            border-color: #2d1e17 !important;
+        }
+        /* Dataframe styling updates */
+        div[data-testid="stDataFrame"] {
+            background-color: #110c09 !important;
         }
     </style>
 """, unsafe_allow_html=True)
 
-# --- LEARNING ANALYTICS LOGGER (FIXED BUG) ---
+# --- LEARNING ANALYTICS LOGGER ---
 LOG_FILE = "student_analytics_log.csv"
 
 def log_user_action(student_id, action_type, details):
@@ -69,7 +81,7 @@ def log_user_action(student_id, action_type, details):
         "Details": str(details)
     }])
     if not os.path.isfile(LOG_FILE):
-        log_data.to_csv(LOG_FILE, index=False)  # FIXED: Corrected reference from log_data to LOG_FILE
+        log_data.to_csv(LOG_FILE, index=False)
     else:
         log_data.to_csv(LOG_FILE, mode='a', header=False, index=False)
 
@@ -209,21 +221,12 @@ with tab_sim:
     col_left, col_right = st.columns([1, 1])
 
     with col_left:
-        st.subheader("🎛️ Software-Defined Schematic Circuit Diagram")
-        st.code(f"""
-        Unregulated DC PSU                   Series Resistor Rs ({r_series} Ω)
-             (V_s) ───────────────────────────[ Rs Control ]──────────┬──────────────┐
-                                                                           │              │
-                                                                         ┌─┴─┐          ┌─┴─┐
-                                                                         └───┘          │   │
-                                                                       Zener Diode      │   │ Load Resistor
-                                                                         (D_Z)          │   │ R_L ({r_load} Ω)
-                                                                         ▲ V_Z ({v_zener}V)   │   │
-                                                                         └───┘          └─┬─┘
-                                                                           │              │
-             GND (0V) ─────────────────────────────────────────────────────┴──────────────┴────── (V_o)
-                                                                                          Digital Voltmeter
-        """, language="text")
+        st.subheader("🎛️ Schematic Circuit Diagram Reference")
+        
+        # Swapped sketch with a clean image representation tag
+        st.markdown("")
+        
+        st.caption(f"Active Parameter States: Series Resistor ($R_s$) = {r_series} Ω, Load Resistor ($R_L$) = {r_load} Ω, Target Reference ($V_Z$) = {v_zener} V")
 
     with col_right:
         st.subheader("📋 Experimental Spreadsheet Log")
@@ -240,8 +243,8 @@ with tab_sim:
             y=active_df["Calculated Output V_o (V)"],
             mode='markers+lines', 
             name="Logged Automated Data",
-            marker=dict(color='#bd8a5c', size=10, symbol='diamond'),
-            line=dict(color='#bd8a5c', width=2.5)
+            marker=dict(color='#d19f77', size=10, symbol='diamond'),
+            line=dict(color='#d19f77', width=2.5)
         ))
         x_max = max(active_df["PSU Voltage V_s (V)"].max() + 2, 15.0)
         y_max = max(active_df["Calculated Output V_o (V)"].max() + 2, v_zener + 2)
@@ -253,8 +256,8 @@ with tab_sim:
         xaxis=dict(title="Input Supply Voltage, V_s (Volts)", range=[0, x_max], zeroline=True, gridcolor="rgba(255,255,255,0.05)"),
         yaxis=dict(title="Stabilized Output Voltage, V_o (Volts)", range=[0, y_max], zeroline=True, gridcolor="rgba(255,255,255,0.05)"),
         template="plotly_dark",
-        paper_bgcolor="#1a1512",
-        plot_bgcolor="#261c16",
+        paper_bgcolor="#1c1410",
+        plot_bgcolor="#110c09",
         height=400,
         margin=dict(l=20, r=20, t=10, b=20)
     )
