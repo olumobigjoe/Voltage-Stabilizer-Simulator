@@ -8,8 +8,8 @@ import os
 
 # ─── PAGE CONFIG ─────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Zener Diode Voltage Stabilizer Lab",
-    page_icon="🛡️",
+    page_title="Zener Diode Voltage Stabilizer Module",
+    page_icon=" ",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -179,7 +179,7 @@ for k, v in DEFS.items():
 # ─── HERO ────────────────────────────────────────────────────────────────────
 st.markdown("""
 <div class="hero">
-  <p class="hero-title">🛡️ Zener Diode Shunt Voltage Stabilizer Laboratory</p>
+  <p class="hero-title"> Zener Diode Shunt Voltage Stabilizer Virtual Lab</p>
   <p class="hero-sub">DC Voltage Regulation · Breakdown Characteristics · Solid State Electronics</p>
 </div>""", unsafe_allow_html=True)
 
@@ -189,11 +189,11 @@ if not st.session_state["auth"]:
     with c2:
         st.markdown("""
         <div class="info-box" style="text-align:center;margin-bottom:20px;">
-            🛡️ <strong>Welcome to the Zener Stabilizer Lab!</strong><br>
+             <strong>Welcome to the Zener Stabilizer Lab!</strong><br>
             Enter your Matriculation Number to initialise the laboratory bench.
         </div>""", unsafe_allow_html=True)
         mat = st.text_input("Matriculation Number", placeholder="e.g. ENG/HND/2024/021")
-        if st.button("▶  INITIALISE LAB BENCH"):
+        if st.button("▶  INITIALISE THE LAB"):
             if mat.strip():
                 st.session_state["student_id"]  = mat.strip()
                 st.session_state["auth"]        = True
@@ -208,17 +208,17 @@ if not st.session_state["auth"]:
 
 # ─── SIDEBAR ─────────────────────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown(f"### 🛡️ Lab Bench")
+    st.markdown(f"###  Lab Bench")
     st.markdown(f"**`{st.session_state['student_id']}`**")
     st.markdown("---")
-    st.markdown("### ⚙️ Component Values")
+    st.markdown("###  Component Values")
 
     rs     = st.number_input("Series Resistor Rs (Ω):", 10.0, 1000.0, 220.0, 10.0, format="%.1f")
     rl     = st.number_input("Load Resistor RL (Ω):",  100.0,5000.0,1000.0, 50.0, format="%.1f")
     vz     = st.number_input("Zener Voltage Vz (V):",   2.0,  15.0,   5.1,   0.1, format="%.1f")
 
     st.markdown("---")
-    st.markdown("### ⚡ PSU Input")
+    st.markdown("###  PSU Input")
     vs     = st.number_input("Supply Voltage Vs (V):", 0.0, 30.0, 0.0, 0.5, format="%.2f")
 
     # ── Physics engine ──
@@ -247,7 +247,7 @@ with st.sidebar:
 
     col_a, col_b = st.columns(2)
     with col_a:
-        if st.button("➕ Log Point"):
+        if st.button(" Log Data"):
             nr = pd.DataFrame([{"V_s (V)":round(vs,2),"V_o (V)":vo,"Rs (Ω)":round(rs,1),"RL (Ω)":round(rl,1)}])
             st.session_state["zener_data"] = (
                 pd.concat([st.session_state["zener_data"], nr], ignore_index=True)
@@ -255,7 +255,7 @@ with st.sidebar:
             log_action(st.session_state["student_id"], "DataPoint", f"Vs={vs},Vo={vo}")
             st.toast("Logged!", icon="⚙️")
     with col_b:
-        if st.button("🗑️ Clear"):
+        if st.button(" Clear"):
             st.session_state["zener_data"] = pd.DataFrame(columns=["V_s (V)","V_o (V)","Rs (Ω)","RL (Ω)"])
             st.rerun()
 
@@ -267,7 +267,7 @@ with st.sidebar:
         st.markdown(f'<span style="color:{clr2};font-weight:700;font-family:monospace;">Quiz: {sc}/100</span>',
                     unsafe_allow_html=True)
     st.markdown("---")
-    if st.button("🔒 Log Out"):
+    if st.button(" Log Out"):
         st.session_state["auth"] = False
         st.rerun()
 
@@ -282,7 +282,7 @@ tab1, tab2, tab3 = st.tabs([
 # TAB 1 — THEORY & COMPONENTS
 # ═══════════════════════════════════════════════════════════════════════════════
 with tab1:
-    st.markdown('<p class="sec">// Practical Overview</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">Practical Overview</p>', unsafe_allow_html=True)
     st.markdown("""
     <div class="info-box">
     <strong>Objective:</strong> To investigate the voltage regulation characteristics of a Zener Diode
@@ -295,7 +295,7 @@ with tab1:
     </div>""", unsafe_allow_html=True)
 
     # ── Component Definitions ─────────────────────────────────────────────────
-    st.markdown('<p class="sec">// Definitions of Key Components & Terms</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">Definitions of Key Components & Terms</p>', unsafe_allow_html=True)
 
     defs = [
         ("🛡️ Zener Diode (Dz)",
@@ -358,7 +358,7 @@ with tab1:
             </div>""", unsafe_allow_html=True)
 
     # ── Equations ─────────────────────────────────────────────────────────────
-    st.markdown('<p class="sec">// Key Circuit Equations</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">Key Circuit Equations</p>', unsafe_allow_html=True)
     st.markdown("""
     <table class="cmp-table">
       <thead><tr><th>Quantity</th><th>Formula</th><th>Notes</th></tr></thead>
@@ -383,7 +383,7 @@ with tab1:
     </div>""", unsafe_allow_html=True)
 
     # ── Circuit Diagram ───────────────────────────────────────────────────────
-    st.markdown('<p class="sec">// Circuit Diagram</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">Circuit Diagram</p>', unsafe_allow_html=True)
     components.html(f"""
     <style>
       body {{ margin:0; padding:14px 10px 20px; background:#020818; }}
@@ -480,7 +480,7 @@ Zener Stabilizer: Rs={rs:.0f}ohm RL={rl:.0f}ohm Vz={vz:.1f}V
 # TAB 2 — SIMULATION
 # ═══════════════════════════════════════════════════════════════════════════════
 with tab2:
-    st.markdown('<p class="sec">// Voltage Regulation Characteristic</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">Voltage Regulation Characteristic</p>', unsafe_allow_html=True)
 
     # ── Live metric row ───────────────────────────────────────────────────────
     is_val  = (vs - vo) / rs if rs > 0 else 0
@@ -584,13 +584,13 @@ with tab2:
     st.plotly_chart(fig, use_container_width=True)
 
     # ── Data Table & Export ───────────────────────────────────────────────────
-    st.markdown('<p class="sec">// Logged Data Table</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">Logged Data Table</p>', unsafe_allow_html=True)
     col_t, col_e = st.columns([2, 1])
     with col_t:
         if not zdf.empty:
             st.dataframe(zdf, use_container_width=True, hide_index=True)
         else:
-            st.markdown('<div class="amber-box">No data logged yet. Set Vs in the sidebar and click ➕ Log Point.</div>',
+            st.markdown('<div class="amber-box">No data logged yet. Set Vs in the sidebar and click Log Data.</div>',
                         unsafe_allow_html=True)
     with col_e:
         if not zdf.empty:
@@ -615,7 +615,7 @@ with tab2:
 # TAB 3 — EXERCISE & SCORING
 # ═══════════════════════════════════════════════════════════════════════════════
 with tab3:
-    st.markdown('<p class="sec">// Post-Practical Exercise — 5 Questions</p>', unsafe_allow_html=True)
+    st.markdown('<p class="sec">Practical Exercises — 5 Questions</p>', unsafe_allow_html=True)
     st.markdown("""
     <div class="info-box">
     Answer all <strong>5 questions</strong> below. Each question carries <strong>20 marks</strong>.
@@ -722,7 +722,7 @@ with tab3:
         st.plotly_chart(fig_sc, use_container_width=True)
 
         # Answer review
-        st.markdown('<p class="sec">// Answer Review</p>', unsafe_allow_html=True)
+        st.markdown('<p class="sec">Answer Review</p>', unsafe_allow_html=True)
         for i, q in enumerate(QUESTIONS, 1):
             ua  = st.session_state.get(f"zq{i}_ans", "—")
             ok  = ua == q["ans"]
@@ -769,7 +769,7 @@ with tab3:
                 )
                 st.markdown("")
 
-            if st.form_submit_button("📨  SUBMIT ANSWERS & GENERATE SCORE",
+            if st.form_submit_button("SUBMIT AND WAIT FOR YOUR SCORE",
                                      use_container_width=True):
                 score = 0
                 for i, q in enumerate(QUESTIONS, 1):
